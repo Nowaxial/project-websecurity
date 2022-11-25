@@ -73,6 +73,33 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
+/* app.get('/api/users', authorization, async (req, res) => {
+  try {
+    const result = await db.getUsers();
+    let duplicateList = result.filter((val) => val.rolename === 'NORMAL_USER');
+    for (const index in result) {
+      const user = result[index];
+      let userMatch = duplicateList.find(
+        (val) => val.userId === user.userId && val.rolename !== user.rolename
+      );
+      if (userMatch !== undefined) {
+        userMatch.rolename += `,${user.rolename}`;
+      }
+    }
+    // Removing roleId & password
+    duplicateList.forEach((obj) => {
+      obj.roles = obj.rolename.split(',');
+      delete obj['roleId'];
+      delete obj['password'];
+      delete obj['rolename'];
+    });
+
+    res.status(200).json(duplicateList);
+  } catch (err) {
+    res.sendStatus(400);
+  }
+}); */
+
 app.get('/api/users',adminAuthorization,async (req, res) => {
 	try {
 		const users = await db.getUsers();
@@ -81,7 +108,7 @@ app.get('/api/users',adminAuthorization,async (req, res) => {
 		console.log('Error getting users');
 		return res.sendStatus(400);
 	}
-});
+}); 
 
 app.get('/api/user/:id', async (req, res) => {
 	try {

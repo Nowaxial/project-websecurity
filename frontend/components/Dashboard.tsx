@@ -28,16 +28,24 @@ const Dashboard = () => {
 })
 
   return (
-    <>
+    <div>
       <div>
         <p>Användare</p>
       <div>
-        <ul>
-        {listUsers}
-        </ul>
+      <table>
+  <tr>
+    <th>Användarnamn</th>
+    <th>Email</th>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
       </div>
       </div>
-    </>
+    </div>
   );
 };
 

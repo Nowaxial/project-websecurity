@@ -8,18 +8,24 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUsers = async() => {
       const response = await client.get("users");
+      console.log(response.data);
+      
       if (response.status == 400) {
         console.log("Kunde inte hämta användare");
       } else if (response.status == 200) {
         const users = await response.data;
         setUsers(users);
         console.log("Hämtat användare");
+        console.log();
+        
       } else {
         console.log("Något gick fel här");
       }
     }
     fetchUsers();
   }, []);
+
+  
 
   useEffect(() => {
     async function loggedIn() {
