@@ -15,7 +15,7 @@ const tokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const whitelist = ['http://localhost:3000'];
 
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: whitelist }));
+app.use(cors({ credentials: true, origin: whitelist, optionSuccessStatus: 200, }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -73,32 +73,7 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
-/* app.get('/api/users', authorization, async (req, res) => {
-  try {
-    const result = await db.getUsers();
-    let duplicateList = result.filter((val) => val.rolename === 'NORMAL_USER');
-    for (const index in result) {
-      const user = result[index];
-      let userMatch = duplicateList.find(
-        (val) => val.userId === user.userId && val.rolename !== user.rolename
-      );
-      if (userMatch !== undefined) {
-        userMatch.rolename += `,${user.rolename}`;
-      }
-    }
-    // Removing roleId & password
-    duplicateList.forEach((obj) => {
-      obj.roles = obj.rolename.split(',');
-      delete obj['roleId'];
-      delete obj['password'];
-      delete obj['rolename'];
-    });
 
-    res.status(200).json(duplicateList);
-  } catch (err) {
-    res.sendStatus(400);
-  }
-}); */
 
 app.get('/api/users',adminAuthorization,async (req, res) => {
 	try {
@@ -155,21 +130,19 @@ app.post('/api/register', async (req, res) => {
 	  res.sendStatus(400);
 	}
   });
+
+  
   
 
-app.get('/api/logout', (req, res) => {
-	return res
-		.clearCookie('token')
-		.status(200)
-		.json({ message: 'Successfully logged out 😏 🍀' });
+app.post('/api/logout', (req, res) => {
+
+	return res.cookie('token',{expires: Date.now()})
+	
+	.status(200).json({ message: 'Successfully logged out 😏 🍀' })
+	
+		
+		
 });
-
-app.get("/api/whosLoggedIn", async (req, res) => {
-
-	let token = req.cookies.token;
-  console.log("Här är token från LoggedIn:" , [token]);
-	});
-  
 
 
 

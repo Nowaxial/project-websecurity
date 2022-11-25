@@ -222,7 +222,8 @@ li{
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: 50%;
+  margin-right: 50px;
 }
 
 td, th {

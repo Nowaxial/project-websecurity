@@ -17,8 +17,7 @@ db.initRoles = () => {
 	const query = mysql.format(sql, [
 		[
 			[1000, 'NORMAL_USER'],
-			[2000, 'ADMIN_USER'],
-			[3000, 'SUPER_USER'],
+			[2000, 'ADMIN_USER']
 		],
 	]);
 	pool.query(query, (err) => {

@@ -4,7 +4,7 @@ import client from "./Client";
 import NavItem from "./NavItem";
 
 const logOut = async () =>{
-  await client.post('/logout', {}, {withCredentials: true})
+  await client.get('/logout')
 }
 
 const checkRoles = async() =>{
@@ -13,7 +13,9 @@ const checkRoles = async() =>{
 
 const MENU_LIST = [
   { text: "Home", href: "/" },
-  { text : 'Logout', href: '/' , onclick:(logOut)}
+  { text : 'Logout', href: '/' , onclick:(logOut)},
+  { text: "Profil", href: "/profil" }
+
   /* { text: "Tickets", href: "/tickets" },
   { text: "Register", href: "/register" },
   { text: "Login", href: "/login" }, */

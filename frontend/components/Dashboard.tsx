@@ -24,6 +24,10 @@ const Dashboard = () => {
   }, []);
 
   const listUsers = users?.map((user) => {
+
+    return <tr key={user['userId']}><td>{user['username']}</td><td>{user['email']}</td></tr>
+
+    
   return <li key={user['userId']}><p>{user['username']}</p></li>
 })
 
@@ -32,15 +36,16 @@ const Dashboard = () => {
       <div>
         <p>Användare</p>
       <div>
+
+
       <table>
+        <tbody>
   <tr>
     <th>Användarnamn</th>
     <th>Email</th>
   </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
+  <listUsers/>
+  </tbody>
 </table>
 
       </div>

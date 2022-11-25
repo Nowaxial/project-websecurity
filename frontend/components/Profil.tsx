@@ -1,36 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import Tickets from './tickets'
 import client from './Client';
+import { useRouter } from 'next/router';
 
 const Profil = () => {
+  const router = useRouter();
 
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    async function loggedIn() {
-      const response = await client.get("/whosLoggedIn");
+    const meProfil = async() => {
+      const response = await client.get('/me');
 
       if (response.status == 400) {
         console.log("Inte inloggad");
+
       } else if (response.status == 200) {
-        const data = await response;
+        const data = response.data;
+        console.log(data);
         setUser(data);
-        
         console.log("Inloggad med token!");
-      } else {
+
+      } else if (response.status == 403) {
+        console.log("Bad request");
+
+      } else{
+
+        router.push('/')
         
-        console.log("something went wrong");
+
+        console.log("Bad request");
       }
     }
-    loggedIn();
+    meProfil();
   }, []);
 
   return (
     <div>
         <section>Här är jag!</section>
-        <Tickets/>
     </div>
   )
 }
 
-export default Profil
+export default Profil;
