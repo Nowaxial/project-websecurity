@@ -3,8 +3,8 @@ import Link from "next/link";
 const Welcome = () => {
     return (
         <div className="wrapperWelcome">
-            <h1>Välkommen till våran sida!</h1>
-            <span>För att se och beställa biljetter till våra föreställningar så måste du vara medlem hos oss</span>
+            <h1>Välkommen hit!!</h1>
+            <span>Denna sidan är under uppbyggnad men du kan skapa ett konto för att ta del av allt det nya som kommer inom snar framtid!</span>
             <span>Vill du skapa ett konto hos oss eller logga in?</span>
             <br/>
             <br/>

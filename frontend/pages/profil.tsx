@@ -1,7 +1,8 @@
 import React from 'react'
-import Profil from '../components/profil'
+import Profil from '../components/Profil'
 
-function profil() {
+
+const profil = () => {
 
   return (
     <div>

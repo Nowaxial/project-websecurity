@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const db = require('./database');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
-const {authorization, adminAuthorization, superAdminAuthorization, allTokensCheck, tokenCheck} = require ('./middleware/auth')
+const {authorization, adminAuthorization} = require ('./middleware/auth');
 require('dotenv').config();
 
 const app = express();
@@ -25,24 +25,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/api/login', async (req, res) => {
 	try {
-		/* console.log('LOGIN BODY:', req.body); */
+		
 		const email = req.body.email;
 		let password = req.body.password;
-		// 1. Check if user already exists
+		
 		const user = await db.getUserByEmail(email);
 		if (!user) {
 			return res.status(400).json({ message: 'Invalid email or password' });
 		}
-		// 2. Compare password
+		
+
 		if (!(await bcrypt.compare(password, user.password))) {
 			return res.status(400).json({ message: 'Invalid email or password' });
 		}
 
-		// 5. Get ROLES for USER
 		const roles = await db.getRolesForUser(user.userId);
-		console.log(roles);
-		// 6. Create a session
-		// 7. Create refresh & accessTokens
+		
 		const token = jwt.sign(
 		  { email: email, id: user.userId, roles: roles.map((val) => val.rolename) },
 		  tokenSecret,
@@ -64,7 +62,6 @@ app.post('/api/login', async (req, res) => {
 			email: email,
 			username: user.username,
 			roles: roles.map((val) => val.rolename),
-			token: token,
 		  });
 
 	} catch (err) {
@@ -77,7 +74,7 @@ app.post('/api/login', async (req, res) => {
 
 app.get('/api/users',adminAuthorization,async (req, res) => {
 	try {
-		const users = await db.getUsers();
+		const users = await db.getUsersAdmin();
 		return res.status(200).json(users);
 	} catch (err) {
 		console.log('Error getting users');
@@ -85,26 +82,40 @@ app.get('/api/users',adminAuthorization,async (req, res) => {
 	}
 }); 
 
-app.get('/api/user/:id', async (req, res) => {
-	try {
-		const id = req.params.id;
 
-		if (isNaN(Number(id))) {
-			return res.status(400).json({ message: 'ID need to be integer' });
+
+
+
+app.get('/api/whoIsIt', authorization, (req, res) => {
+    console.log('----/API/LOGGEDIN-----');
+    const token = req.cookies.token;
+	const tokenObj = {loggedInWithToken: false};
+
+	try {
+
+		const data =jwt.verify(token, tokenSecret);
+
+		console.log(data);
+
+		if (data) {
+			tokenObj.loggedInWithToken = true;
+			tokenObj.data = data;
 		}
 
-		const user = await db.getUserById(id);
-
-		return res.status(200).json(user);
-	} catch (err) {
-		console.log('Error in getting users: ', err);
-		return res.sendStatus(400);
+		
+	} catch (error) {
+		tokenObj.errorMessage = 'Token expired';
 	}
+
+	res.json(tokenObj);
+
 });
+
+
 
 app.post('/api/register', async (req, res) => {
 	try {
-	  // 0. Get data from body
+	  
 	  const username = req.body.username;
 	  const email = req.body.email;
 	  let password = req.body.password;
@@ -112,13 +123,12 @@ app.post('/api/register', async (req, res) => {
 	  if (!username || !email || !password) {
 		return res.sendStatus(400);
 	  }
-	  // 2. Check if user already exists in DB
+	  
 	  const user = await db.getUserByEmail(email);
 	  if (user) {
 		return res.status(409).json({ message: 'User already exists' });
 	  }
   
-	  // 3. Hash password & Register USER
 	  const hashedPassword = await bcrypt.hash(password, 10);
 	  const userId = await db.createUser(username, email, hashedPassword);
 	  // // 4. Assign ROLE to USER
@@ -134,14 +144,9 @@ app.post('/api/register', async (req, res) => {
   
   
 
-app.post('/api/logout', (req, res) => {
-
-	return res.cookie('token',{expires: Date.now()})
-	
-	.status(200).json({ message: 'Successfully logged out 😏 🍀' })
-	
-		
-		
+app.get('/api/logout', (req, res) => {
+	res.clearCookie("token").status(200).json({ message: "Logged out" });	
+	res.end();
 });
 
 

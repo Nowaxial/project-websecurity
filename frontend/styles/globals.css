@@ -222,7 +222,7 @@ li{
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 50%;
+  width: 100%;
   margin-right: 50px;
 }
 
@@ -232,10 +232,63 @@ td, th {
   padding: 8px;
 }
 
+tr{
+  width:100%;
+}
+
 tr:nth-child(even) {
   background-color: #dddddd;
 }
 
 
+@media screen and (max-width: 708px) {
+  table {width:100%;}
+  thead {display: none;}
+  tr:nth-of-type(2n) {background-color: inherit;}
+  tr td:first-child {background: #f0f0f0; font-weight:bold;font-size:1.3em;}
+  tbody td {display: block;  text-align:center;}
+  tbody td:before { 
+      content: attr(data-th); 
+      display: block;
+      text-align:center;  
+  }
+}
+
+
+
+/*======================
+    404 page
+=======================*/
+
+
+.page_404{ padding:40px 0; background:#fff; font-family: 'Arvo', serif;
+}
+
+.page_404  img{ width:100%;}
+
+.four_zero_four_bg{
+ 
+ background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+    height: 400px;
+    background-position: center;
+ }
+ 
+ 
+ .four_zero_four_bg h1{
+ font-size:80px;
+ }
+ 
+  .four_zero_four_bg h3{
+			 font-size:80px;
+			 }
+			 
+			 .link_404{			 
+	color: #fff!important;
+    padding: 10px 102px;
+    background: #0070f3;
+    margin: 20px 0;
+    border-radius: 0.25rem;
+    display: inline-block;}
+	.contant_box_404{ margin-top:-50px;}
 
 

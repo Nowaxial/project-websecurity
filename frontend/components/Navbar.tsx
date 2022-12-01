@@ -1,61 +1,53 @@
-import Link from "next/link";
-import React, { useState } from "react";
-import client from "./Client";
-import NavItem from "./NavItem";
+import Link from 'next/link';
+import Router from 'next/router';
+import React, { useEffect, useState } from 'react';
+import client from '../lib/Client';
+import NavItem from './NavItem';
 
-const logOut = async () =>{
-  await client.get('/logout')
-}
+type href=string;
 
-const checkRoles = async() =>{
-
-};
-
-const MENU_LIST = [
-  { text: "Home", href: "/" },
-  { text : 'Logout', href: '/' , onclick:(logOut)},
-  { text: "Profil", href: "/profil" }
-
-  /* { text: "Tickets", href: "/tickets" },
-  { text: "Register", href: "/register" },
-  { text: "Login", href: "/login" }, */
+let MENU_LIST = [
+	{ text: 'Home', href: '/' },
+	{ text: 'Video', href: '/fun' },
 ];
 const Navbar = () => {
-  const [navActive, setNavActive] = useState<any | null>(null);
-  const [activeIdx, setActiveIdx] = useState(0);
 
-  return (
-    <header>
-      <nav className={`nav`}>
-        <Link href={"/"}>
-          <a>
-            <h1 className="logo">Where is @?</h1>
-          </a>
-        </Link>
-        <div
-          onClick={() => setNavActive(!navActive)}
-          className={`nav__menu-bar`}
-        >
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-        <div className={`${navActive ? "active" : ""} nav__menu-list`}>
-          {MENU_LIST.map((menu, idx) => (
-            <div
-              onClick={() => {
-                setActiveIdx(idx);
-                setNavActive(false);
-              }}
-              key={menu.text}
-            >
-              <NavItem active={activeIdx === idx} {...menu} />
-            </div>
-          ))}
-        </div>
-      </nav>
-    </header>
-  );
+  
+	const [navActive, setNavActive] = useState<any | null>(null);
+	const [activeIdx, setActiveIdx] = useState(0);
+
+  
+
+	return (
+		<header>
+			<nav className={`nav`}>
+				<Link href={'/'}>
+					<a>
+						<h1 className="logo">Where is @?</h1>
+					</a>
+				</Link>
+				<div
+					onClick={() => setNavActive(!navActive)}
+					className={`nav__menu-bar`}>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+				<div className={`${navActive ? 'active' : ''} nav__menu-list`}>
+					{MENU_LIST.map((menu, idx) => (
+						<div
+							onClick={() => {
+								setActiveIdx(idx);
+								setNavActive(false);
+							}}
+							key={menu.text}>
+							<NavItem active={activeIdx === idx} {...menu} />
+						</div>
+					))}
+				</div>
+			</nav>
+		</header>
+	);
 };
 
 export default Navbar;

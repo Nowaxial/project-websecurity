@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-import '../styles/Tickets.css'
 import Navbar from '../components/Navbar'
 
 import type { AppProps } from 'next/app'

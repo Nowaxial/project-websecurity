@@ -2,18 +2,17 @@ import { useRouter } from 'next/router';
 import {
 	useState,
 	useEffect,
-	ReactElement,
 	JSXElementConstructor,
-	ReactFragment,
 	Key,
+	ReactElement,
+	ReactFragment,
 	ReactPortal,
 } from 'react';
 import client from '../lib/Client';
-import AdminProfil from './AdminProfil';
 
-const Dashboard = () => {
-	const [users, setUsers] = useState([]);
+const AdminProfil = () => {
 	const [loggedIn, setLoggedIn] = useState<any>([]);
+	const [users, setUsers] = useState([]);
 
 	const router = useRouter();
 
@@ -23,10 +22,6 @@ const Dashboard = () => {
 			const data = await response.data;
 
 			try {
-				/* if (!data){
-					router.push('/');
-				}
-				 */
 				if (data.data.roles.includes('NORMAL_USER')) {
 					router.push('/profil');
 				}
@@ -40,7 +35,7 @@ const Dashboard = () => {
 			}
 		};
 		whoIsIt();
-	}, [router]);
+	}, []);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -58,16 +53,6 @@ const Dashboard = () => {
 		};
 		fetchUsers();
 	}, []);
-
-	const listUsers = users?.map((user) => {
-		return (
-			<tr key={user['userId']}>
-				<td>{user['userId']}</td>
-				<td>{user['username']}</td>
-				<td>{user['email']}</td>
-			</tr>
-		);
-	});
 
 	const logout = async () => {
 		const response = await client.get('logout');
@@ -94,10 +79,13 @@ const Dashboard = () => {
 			return (
 				<>
 					<div className="wrapperWelcome">
-						<h1> Välkommen {userz['iss']} !</h1>
 						<span>
-							<h2>Här är dina uppgifter om dig!!</h2>
+							<h1> Välkommen {userz['iss']} !</h1>
 						</span>
+						<span>Här kommer alla dina uppgifter!</span>
+						<button className="btnWelcome" onClick={logout}>
+							Logout
+						</button>
 						<div>
 							<table>
 								<tbody>
@@ -123,10 +111,8 @@ const Dashboard = () => {
 									</tr>
 								</tbody>
 							</table>
+
 							<br></br>
-							<button className="btnWelcome" onClick={logout}>
-								Logout
-							</button>
 						</div>
 					</div>
 				</>
@@ -134,37 +120,7 @@ const Dashboard = () => {
 		}
 	);
 
-	return (
-		<div>
-			{profilInfo}
-			<div className="wrapperWelcome">
-				<h1> Användare i databasen!</h1>
-				<div>
-					<table>
-						<tbody>
-							<tr>
-								<th>
-									<p>UserId</p>
-								</th>
-								<th>
-									<p>Användarnamn</p>
-								</th>
-								<th>
-									<p>Email</p>
-								</th>
-							</tr>
-							{listUsers}
-						</tbody>
-					</table>
-					<br></br>
-					<br></br>
-					<button className="btnWelcome" onClick={logout}>
-						Logout
-					</button>
-				</div>
-			</div>
-		</div>
-	);
+	return <div>{profilInfo}</div>;
 };
 
-export default Dashboard;
+export default AdminProfil;
