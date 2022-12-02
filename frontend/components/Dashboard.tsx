@@ -40,7 +40,7 @@ const Dashboard = () => {
 			}
 		};
 		whoIsIt();
-	}, [router]);
+	}, []);
 
 	useEffect(() => {
 		const fetchUsers = async () => {
